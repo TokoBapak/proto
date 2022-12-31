@@ -56,3 +56,6 @@ jobs:
       
       - name: Setup protoc-gen-dart
         run: dart pub global activate protoc_plugin
+
+      - name: Generate stubs
+        run: buf generate

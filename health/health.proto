@@ -22,7 +22,7 @@ package health;
 option csharp_namespace = "TokoBapak.Protobuf.Health";
 option go_package = "tokobapak/pro1tobuf/healthpb";
 option java_multiple_files = true;
-option java_package = "my.id.tokobapak.protobuf";
+option java_package = "id.my.tokobapak.protobuf";
 
 message HealthCheckRequest {
   string service = 1;

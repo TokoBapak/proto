@@ -17,7 +17,7 @@ option cc_enable_arenas = true;
 
 // Authentication half-heartly implements OAuth2 specification.
 service Authentication {
-  // THe usual login mechanism, it doesn't support 2FA challenge yet
+  // The usual login mechanism, it doesn't support 2FA challenge yet
   // for the response (it can be done using oneof).
   // Right now, we're focusing on the fastest way to develop.
   rpc Login(LoginRequest) returns (TokenSet) {}

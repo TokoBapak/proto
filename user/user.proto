@@ -67,7 +67,7 @@ message EmptyResponse {}
 
 // Handles core entry for user such as registration and permanent deletion.
 service Listing {
-  // Handles registration. ONly ask for email and password.
+  // Handles registration. Only ask for email and password.
   // It should send an email verification to the user, continuing with the VerifyEmail rpc.
   rpc Register(RegisterRequest) returns (EmptyResponse) {}
   // Once verified, it will set the user status from STATE_PENDING_VERIFICATION

@@ -22,9 +22,10 @@ jobs:
         uses: bufbuild/buf-lint-action@v1
 
       - name: Check for breaking changes against the master branch
-        run:  bufbuild/buf-breaking-action@v1
+        uses:  bufbuild/buf-breaking-action@v1
         with:
           against: github.com/${{ github.repository }}.git#branch=master
+
   generate:
     name: Generate Stubs
     runs-on: ubuntu-latest

@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+// Package authentication handles authentication such
+// as login, logout, and access token refresh.
+//
+// This package doesn't necessarily implements OAuth2
+// specification, but at least it borrows some of the
+// thing that defined by the OAuth2 specification.
+package authentication;
+
+option go_package = "tokobapak/protobuf/authenticationpb";
+option java_package = "my.id.tokobapak.protobuf";
+option java_outer_classname = "Auth";
+option java_multiple_files = true;
+option csharp_namespace = "TokoBapak.Protobuf.Authentication";
+option cc_enable_arenas = true;
+
+// Authentication half-heartly implements OAuth2 specification.
+service Authentication {
+  // THe usual login mechanism, it doesn't support 2FA challenge yet
+  // for the response (it can be done using oneof).
+  // Right now, we're focusing on the fastest way to develop.
+  rpc Login(LoginRequest) returns (TokenSet) {}
+  // Refresh acquires new TokenSet for expired access tokens.
+  rpc Refresh(RefreshRequest) returns (TokenSet) {}
+  // Sends a logout state for the user. The access and refresh token
+  // will be invalidated.
+  rpc Logout(LogoutRequest) returns (EmptyResponse) {}
+}
+
+message TokenSet {
+  // Short-lived token to access resources on TokoBapak.
+  string access_token = 1;
+  // Long-lived (not so long-lived actually) token to
+  // request a new access token.
+  string refresh_token = 2;
+  // Unix second date of the access_token's expiry.
+  uint64 expires_at = 3;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RefreshRequest {
+  string refresh_token = 1;
+}
+
+message LogoutRequest {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message EmptyResponse {}
+

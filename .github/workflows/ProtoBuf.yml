@@ -32,6 +32,9 @@ jobs:
     container: ubuntu:latest
     timeout-minutes: 30
     steps:
+      - name: Setup everything
+        run: apt-get update && apt-get upgrade -y && apt-get install -y tar gzip curl ca-certificates unzip git autoconf build-essential make cmake
+
       - name: Checkout code
         uses: actions/checkout@v3
         

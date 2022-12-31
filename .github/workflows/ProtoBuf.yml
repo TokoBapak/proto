@@ -24,11 +24,12 @@ jobs:
       - name: Check for breaking changes against the master branch
         uses:  bufbuild/buf-breaking-action@v1
         with:
-          against: github.com/${{ github.repository }}.git#branch=master
+          against: https://github.com/${{ github.repository }}.git#branch=master
 
   generate:
     name: Generate Stubs
     runs-on: ubuntu-latest
+    container: ubuntu:latest
     timeout-minutes: 30
     steps:
       - name: Checkout code

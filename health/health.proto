@@ -28,7 +28,7 @@ message HealthCheckRequest {
   string service = 1;
 }
 
-message HealthCheckResponse {
+message HealthCheckReply {
   enum ServingStatus {
     SERVING_STATUS_UNKNOWN = 0;
     SERVING_STATUS_SERVING = 1;
@@ -58,5 +58,5 @@ service Health {
   // should assume this method is not supported and should not retry the
   // call.  If the call terminates with any other status (including OK),
   // clients should retry the call with appropriate exponential backoff.
-  rpc Watch(HealthCheckRequest) returns (stream HealthCheckResponse);
+  rpc Watch(HealthCheckRequest) returns (stream HealthCheckReply);
 }

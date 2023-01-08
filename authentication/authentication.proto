@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "common/common.proto";
+
 // Package authentication handles authentication such
 // as login, logout, and access token refresh.
 //
@@ -22,13 +24,13 @@ service Authentication {
   // Right now, we're focusing on the fastest way to develop.
   rpc Login(LoginRequest) returns (TokenSetReply) {}
   // Refresh acquires new TokenSet for expired access tokens.
-  rpc Refresh(RefreshRequest) returns (TokenSet) {}
+  rpc Refresh(RefreshRequest) returns (TokenSetReply) {}
   // Sends a logout state for the user. The access and refresh token
   // will be invalidated.
-  rpc Logout(LogoutRequest) returns (EmptyReply) {}
+  rpc Logout(LogoutRequest) returns (common.EmptyReply) {}
 }
 
-message TokenSet {
+message TokenSetReply {
   // Short-lived token to access resources on TokoBapak.
   string access_token = 1;
   // Long-lived (not so long-lived actually) token to
@@ -51,6 +53,3 @@ message LogoutRequest {
   string access_token = 1;
   string refresh_token = 2;
 }
-
-message EmptyResponse {}
-

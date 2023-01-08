@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "common/common.proto";
+
 // Package user handle user-related stuff
 package user;
 
@@ -49,7 +51,7 @@ message Address {
   double latitude = 8;
 }
 
-message UserAggregate {
+message UserAggregateReply {
   string guid = 1;
   string full_name = 2;
   string date_of_birth = 3;
@@ -63,20 +65,18 @@ message UserAggregate {
   string username = 10;
 }
 
-message EmptyResponse {}
-
 // Handles core entry for user such as registration and permanent deletion.
 service Listing {
   // Handles registration. Only ask for email and password.
   // It should send an email verification to the user, continuing with the VerifyEmail rpc.
-  rpc Register(RegisterRequest) returns (EmptyResponse) {}
+  rpc Register(RegisterRequest) returns (common.EmptyReply) {}
   // Once verified, it will set the user status from STATE_PENDING_VERIFICATION
   // to STATE_VALIDATED.
-  rpc VerifyEmail(VerifyEmailRequest) returns (EmptyResponse) {}
+  rpc VerifyEmail(VerifyEmailRequest) returns (common.EmptyReply) {}
   // Request a confirmation email for permanent deletion.
-  rpc DeletePermanently(DeleteRequest) returns (EmptyResponse) {}
+  rpc DeletePermanently(DeleteRequest) returns (common.EmptyReply) {}
   // Verify that the user is indeed wants and aware of their permanent account deletion.
-  rpc VerifyPermanentDeletion(VerifyPermanentDeletionRequest) returns (EmptyResponse) {}
+  rpc VerifyPermanentDeletion(VerifyPermanentDeletionRequest) returns (common.EmptyReply) {}
 }
 
 message RegisterRequest {
@@ -101,17 +101,17 @@ message VerifyPermanentDeletionRequest {
 // Handles everything user profile-related.
 service Profile {
   // Get user's profile.
-  rpc Get(GetProfileRequest) returns (UserAggregate) {}
+  rpc Get(GetProfileRequest) returns (UserAggregateReply) {}
   // Get another user's public profile
-  rpc GetPublicProfile(GetPublicProfileRequest) returns (GetPublicProfileResponse) {}
+  rpc GetPublicProfile(GetPublicProfileRequest) returns (GetPublicProfileReply) {}
   // Set user's profile data
-  rpc EditProfile(EditProfileRequest) returns (UserAggregate) {}
+  rpc EditProfile(EditProfileRequest) returns (UserAggregateReply) {}
   // Change of email address requires another layer of verification that they
   // are using email address that are correct and approved.
   // They will continue with the VerifyChangedEmailAddress rpc.
-  rpc ChangeEmailAddress(ChangeEmailAddressRequest) returns (EmptyResponse) {}
+  rpc ChangeEmailAddress(ChangeEmailAddressRequest) returns (common.EmptyReply) {}
   // It verifies the changed email address that are requested previously.
-  rpc VerifyChangedEmailAddress(VerifyChangedEmailAddressRequest) returns (UserAggregate) {}
+  rpc VerifyChangedEmailAddress(VerifyChangedEmailAddressRequest) returns (UserAggregateReply) {}
 }
 
 message GetProfileRequest {
@@ -124,7 +124,7 @@ message GetPublicProfileRequest {
   string username = 2;
 }
 
-message GetPublicProfileResponse {
+message GetPublicProfileReply {
   string full_name = 1;
   string username = 2;
   string avatar_url = 3;

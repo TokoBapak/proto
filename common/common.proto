@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+// Package common provides common messages that is shared between
+// the proto contracts.
+package common;
+
+option go_package = "tokobapak/protobuf/commonpb";
+option java_package = "id.my.tokobapak.protobuf";
+option java_outer_classname = "Common";
+option java_multiple_files = true;
+option csharp_namespace = "TokoBapak.Protobuf.CommonSchema";
+option cc_enable_arenas = true;
+
+// EmptyReply provides a reply that contains nothing
+message EmptyReply {}
+
+// EmptyRequest provides a request that contains nothing
+message EmptyRequest {}

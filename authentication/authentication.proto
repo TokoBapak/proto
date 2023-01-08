@@ -20,7 +20,7 @@ service Authentication {
   // The usual login mechanism, it doesn't support 2FA challenge yet
   // for the response (it can be done using oneof).
   // Right now, we're focusing on the fastest way to develop.
-  rpc Login(LoginRequest) returns (TokenSet) {}
+  rpc Login(LoginRequest) returns (TokenSetReply) {}
   // Refresh acquires new TokenSet for expired access tokens.
   rpc Refresh(RefreshRequest) returns (TokenSet) {}
   // Sends a logout state for the user. The access and refresh token

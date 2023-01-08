@@ -7,7 +7,7 @@ option go_package = "tokobapak/protobuf/userpb";
 option java_package = "id.my.tokobapak.protobuf";
 option java_outer_classname = "User";
 option java_multiple_files = true;
-option csharp_namespace = "TokoBapak.Protobuf.User";
+option csharp_namespace = "TokoBapak.Protobuf.UserSchema";
 option cc_enable_arenas = true;
 
 message Authentication {

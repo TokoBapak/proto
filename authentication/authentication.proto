@@ -25,7 +25,7 @@ service Authentication {
   rpc Refresh(RefreshRequest) returns (TokenSet) {}
   // Sends a logout state for the user. The access and refresh token
   // will be invalidated.
-  rpc Logout(LogoutRequest) returns (EmptyResponse) {}
+  rpc Logout(LogoutRequest) returns (EmptyReply) {}
 }
 
 message TokenSet {

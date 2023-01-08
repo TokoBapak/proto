@@ -12,7 +12,7 @@ option go_package = "tokobapak/protobuf/authenticationpb";
 option java_package = "id.my.tokobapak.protobuf";
 option java_outer_classname = "Auth";
 option java_multiple_files = true;
-option csharp_namespace = "TokoBapak.Protobuf.Authentication";
+option csharp_namespace = "TokoBapak.Protobuf.AuthenticationSchema";
 option cc_enable_arenas = true;
 
 // Authentication half-heartly implements OAuth2 specification.

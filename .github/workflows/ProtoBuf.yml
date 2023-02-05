@@ -1,0 +1,70 @@
+name: Protocol Buffers
+
+on:
+  push: 
+    branches:
+      - "*"
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Install buf
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ github.token }}
+        
+      - name: Lint
+        uses: bufbuild/buf-lint-action@v1
+
+      - name: Check for breaking changes against the master branch
+        uses:  bufbuild/buf-breaking-action@v1
+        with:
+          against: https://github.com/${{ github.repository }}.git#branch=master
+
+  generate:
+    name: Generate Stubs
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
+    timeout-minutes: 30
+    steps:
+      - name: Setup everything
+        run: apt-get update && apt-get upgrade -y && apt-get install -y tar gzip curl ca-certificates unzip git autoconf build-essential make cmake
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Install buf
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.19.0'
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1.3
+
+      - name: Setup Protoc
+        run: >
+          curl -LO  https://github.com/protocolbuffers/protobuf/releases/download/v21.12/protoc-21.12-linux-x86_64.zip &&
+          unzip protoc-21.12-linux-x86_64.zip -d /usr/local
+      
+      - name: Setup protoc-gen-go
+        run: >
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28 &&
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+      
+      - name: Setup protoc-gen-dart
+        run: dart pub global activate protoc_plugin
+
+      - name: Generate stubs
+        run: buf generate --debug --verbose

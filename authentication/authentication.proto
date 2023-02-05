@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+import "common/common.proto";
+
+// Package authentication handles authentication such
+// as login, logout, and access token refresh.
+//
+// This package doesn't necessarily implements OAuth2
+// specification, but at least it borrows some of the
+// thing that defined by the OAuth2 specification.
+package authentication;
+
+option go_package = "tokobapak/protobuf/authenticationpb";
+option java_package = "id.my.tokobapak.protobuf";
+option java_outer_classname = "Auth";
+option java_multiple_files = true;
+option csharp_namespace = "TokoBapak.Protobuf.AuthenticationSchema";
+option cc_enable_arenas = true;
+
+// Authentication half-heartly implements OAuth2 specification.
+service Authentication {
+  // The usual login mechanism, it doesn't support 2FA challenge yet
+  // for the response (it can be done using oneof).
+  // Right now, we're focusing on the fastest way to develop.
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  // Refresh acquires new TokenSet for expired access tokens.
+  rpc Refresh(RefreshRequest) returns (LoginResponse) {}
+  // Sends a logout state for the user. The access and refresh token
+  // will be invalidated.
+  rpc Logout(LogoutRequest) returns (common.EmptyReply) {}
+}
+
+message TokenSetReply {
+  // Short-lived token to access resources on TokoBapak.
+  string access_token = 1;
+  // Long-lived (not so long-lived actually) token to
+  // request a new access token.
+  string refresh_token = 2;
+  // Unix second date of the access_token's expiry.
+  uint64 expires_at = 3;
+}
+
+enum LoginErrorState {
+  // Null-value login error state
+  LOGIN_ERROR_STATE_UNSPECIFIED = 0;
+
+  // Some fields are empty or missing
+  LOGIN_ERROR_STATE_INVALID_INPUT = 1;
+  // User was not found
+  LOGIN_ERROR_STATE_USER_NOT_FOUND = 2;
+  // Wrong password
+  LOGIN_ERROR_STATE_INVALID_PASSWORD = 3;
+  // Invalid (or maybe expired) refresh token
+  LOGIN_ERROR_STATE_INVALID_REFRESH_TOKEN = 4;
+}
+
+message LoginErrorResponse {
+  message ErrorDescriptor {
+    string message = 1;
+    string field = 2;
+    string rule = 3;
+  }
+
+  repeated ErrorDescriptor descriptors = 1;
+  int32 attempts_remaining = 2;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  oneof response {
+    TokenSetReply token_set_reply = 1;
+    LoginErrorResponse login_error_response = 2;
+  }
+}
+
+message RefreshRequest {
+  string refresh_token = 1;
+}
+
+message LogoutRequest {
+  string access_token = 1;
+  string refresh_token = 2;
+}

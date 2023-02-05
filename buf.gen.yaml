@@ -1,0 +1,17 @@
+version: v1
+plugins:
+  - plugin: go
+    out: gen/proto/go
+    opt: paths=source_relative
+  - plugin: cpp
+    out: gen/proto/cpp
+  - plugin: python
+    out: gen/proto/python
+  - plugin: dart
+    out: gen/proto/dart
+  - plugin: php
+    out: gen/proto/php
+  - plugin: ruby
+    out: gen/proto/ruby
+  - plugin: csharp
+    out: gen/proto/csharp

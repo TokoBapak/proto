@@ -1,0 +1,15 @@
+version: v1
+breaking:
+  use:
+    - FILE
+lint:
+  use:
+    - BASIC
+    - FILE_LOWER_SNAKE_CASE
+    - ENUM_VALUE_PREFIX # requires that all enum value names are prefixed with the enum name
+    - ENUM_ZERO_VALUE_SUFFIX # requires that all enum values have a zero value of ENUM_NAME_UNSPECIFIED.
+    - COMMENT_RPC # checks that RPCs have non-empty comments.
+    - COMMENT_SERVICE # checks that services have non-empty comments.
+    - PACKAGE_NO_IMPORT_CYCLE
+  ignore:
+    - health

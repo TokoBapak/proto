@@ -22,9 +22,9 @@ service Authentication {
   // The usual login mechanism, it doesn't support 2FA challenge yet
   // for the response (it can be done using oneof).
   // Right now, we're focusing on the fastest way to develop.
-  rpc Login(LoginRequest) returns (TokenSetReply) {}
+  rpc Login(LoginRequest) returns (LoginResponse) {}
   // Refresh acquires new TokenSet for expired access tokens.
-  rpc Refresh(RefreshRequest) returns (TokenSetReply) {}
+  rpc Refresh(RefreshRequest) returns (LoginResponse) {}
   // Sends a logout state for the user. The access and refresh token
   // will be invalidated.
   rpc Logout(LogoutRequest) returns (common.EmptyReply) {}
@@ -40,9 +40,41 @@ message TokenSetReply {
   uint64 expires_at = 3;
 }
 
+enum LoginErrorState {
+  // Null-value login error state
+  LOGIN_ERROR_STATE_UNSPECIFIED = 0;
+
+  // Some fields are empty or missing
+  LOGIN_ERROR_STATE_INVALID_INPUT = 1;
+  // User was not found
+  LOGIN_ERROR_STATE_USER_NOT_FOUND = 2;
+  // Wrong password
+  LOGIN_ERROR_STATE_INVALID_PASSWORD = 3;
+  // Invalid (or maybe expired) refresh token
+  LOGIN_ERROR_STATE_INVALID_REFRESH_TOKEN = 4;
+}
+
+message LoginErrorResponse {
+  message ErrorDescriptor {
+    string message = 1;
+    string field = 2;
+    string rule = 3;
+  }
+
+  repeated ErrorDescriptor descriptors = 1;
+  int32 attempts_remaining = 2;
+}
+
 message LoginRequest {
   string email = 1;
   string password = 2;
+}
+
+message LoginResponse {
+  oneof response {
+    TokenSetReply token_set_reply = 1;
+    LoginErrorResponse login_error_response = 2;
+  }
 }
 
 message RefreshRequest {

@@ -11,6 +11,21 @@ option java_multiple_files = true;
 option csharp_namespace = "TokoBapak.Protobuf.CommonSchema";
 option cc_enable_arenas = true;
 
+// EchoService receive string and returning it with maybe more data
+service EchoService {
+  rpc Echo(EchoRequest) returns (EchoResponse) {}
+}
+
+// EchoRequest provides a request that contains some string
+message EchoRequest {
+  string request = 1;
+}
+
+// EchoResponse provides a reply that contains some string from request and maybe more
+message EchoResponse {
+  string response = 1;
+}
+
 // EmptyReply provides a reply that contains nothing
 message EmptyReply {}
 

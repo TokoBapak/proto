@@ -13,6 +13,7 @@ option cc_enable_arenas = true;
 
 // EchoService receive string and returning it with maybe more data
 service EchoService {
+  // Echo receive string and returning it with maybe more data
   rpc Echo(EchoRequest) returns (EchoResponse) {}
 }
 

@@ -55,13 +55,7 @@ enum LoginErrorState {
 }
 
 message LoginErrorResponse {
-  message ErrorDescriptor {
-    string message = 1;
-    string field = 2;
-    string rule = 3;
-  }
-
-  repeated ErrorDescriptor descriptors = 1;
+  repeated common.ErrorDescriptor descriptors = 1;
   int32 attempts_remaining = 2;
 }
 

@@ -16,3 +16,9 @@ message EmptyReply {}
 
 // EmptyRequest provides a request that contains nothing
 message EmptyRequest {}
+
+message ErrorDescriptor {
+  string message = 1;
+  string field = 2;
+  string rule = 3;
+}

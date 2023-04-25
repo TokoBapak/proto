@@ -1,0 +1,59 @@
+syntax = "proto3";
+import "common/product/product.proto";
+
+// Package inventory handles inventory and product related-stuff
+// in which it handles a few business requirements:
+//
+// - User can see (and search by query, obviously) available and sold out products,
+//   for each product containing ID, name, description, price, available stocks,
+//   options, product weight, dimension, and every other fields you can think of.
+package inventory;
+
+option go_package = "tokobapak/protobuf/inventorypb";
+option java_package = "id.my.tokobapak.protobuf";
+option java_outer_classname = "Inventory";
+option java_multiple_files = true;
+option csharp_namespace = "TokoBapak.Protobuf.InventorySchema";
+option cc_enable_arenas = true;
+
+// Search service defines a product searching capabilities for TokoBapak.
+service Search {
+  // Query searches a product from a search bar.
+  rpc Query(SearchQueryRequest) returns (SearchQueryResponse) {}
+}
+
+enum SortingCriterion {
+  SORTING_CRITERION_UNSPECIFIED = 0;
+  SORTING_CRITERION_FEATURED = 1;
+  SORTING_CRITERION_PRICE_LOW_TO_HIGH = 2;
+  SORTING_CRITERION_PRICE_HIGH_TO_LOW = 3;
+  SORTING_CRITERION_AVERAGE_CUSTOMER_REVIEW = 4;
+  SORTING_CRITERION_NEWEST_ARRIVAL = 5;
+  SORTING_CRITERION_BEST_SELLERS = 6;
+}
+
+message PriceRange {
+  uint32 minimum = 1;
+  uint64 maximum = 2;
+}
+
+message SearchQueryRequest {
+  // Query defines a query from the search bar
+  string query = 1;
+  // TODO: should category be an enum of categories?
+  optional string category = 2;
+  // TODO: should location be an enum of locations?
+  optional string location = 3;
+  optional common.product.ItemCondition item_condition = 4;
+  optional PriceRange price_range = 5;
+  optional uint32 customer_review_minimum = 6;
+  optional SortingCriterion sorting_criterion = 7;
+  optional string next_page_token = 8;
+}
+
+message SearchQueryResponse {
+  string next_page_token = 1;
+  uint32 current_page_number = 2;
+  uint32 total_found_products = 3;
+  repeated common.product.Product products = 4;
+}
